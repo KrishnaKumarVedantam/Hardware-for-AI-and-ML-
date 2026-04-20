@@ -1,0 +1,4 @@
+Using device: Tesla T4
+Model moved to: cuda
+Output shape: torch.Size([16, 1])
+Output device: cuda:0
