@@ -37,7 +37,7 @@ Microphone → ADC + Framing (16kHz, 25ms windows)
   - On-chip SRAM
   - Binary Conv1 (XOR+popcount)
   - BatchNorm+Thresh
-  - Binary Conv2 ★DOMINANT (XOR+popcount)
+  - Binary Conv2 DOMINANT (XOR+popcount)
   - BatchNorm+Thresh
   - Global AvgPool
   - FC+Softmax
@@ -53,8 +53,8 @@ Microphone → ADC + Framing (16kHz, 25ms windows)
 |-------|--------|-------|---|
 | Conv1 | C_in=1, C_out=64, K=3, L=500 | 192,000 | 1.5% |
 | Conv2 | C_in=64, C_out=64, K=3, L=500 | 12,288,000 | 98.4% DOMINANT |
-| FC | 64 → 10 classes | 1,280 | 0.01% |
-| **Total** | | **12,481,280** | |
+| FC | 64 to 10 classes | 1,280 | 0.01% |
+| Total | | 12,481,280 | |
 
 ---
 
@@ -70,7 +70,7 @@ Microphone → ADC + Framing (16kHz, 25ms windows)
 
 ---
 
-## Arithmetic Intensity & Roofline Analysis
+## Arithmetic Intensity and Roofline Analysis
 
 | Metric | Value |
 |--------|-------|
@@ -86,24 +86,42 @@ Microphone → ADC + Framing (16kHz, 25ms windows)
 
 ---
 
-## Interface: SPI
+## HDL Compute Core: binary_conv.sv
 
-- Host: ARM Cortex-M MCU (STM32L4 or Nordic nRF52840)
-- Data per inference: 500 bytes TX + 10 bytes RX = 510 bytes
-- Required BW: 510 x 10Hz = 0.041 Mbit/s
-- SPI rated: 50 Mbit/s
-- SPI utilization: 0.082% — NOT interface-bound
-- Conv2 AI = 187.5 FLOPs/byte (5.6x above ridge) — COMPUTE-BOUND
-- SPI is sufficient; AXI complexity is unnecessary for this throughput
+binary_conv.sv implements the Binary 1D Convolution engine for the dominant
+Conv2 kernel (98.4% of total FLOPs). It replaces traditional FP32
+multiply-accumulate with XOR + popcount, exploiting 1-bit weight compression
+of the Binary Neural Network. For each output channel it XORs each 1-bit
+weight with the MSB of each INT8 activation, computes popcount of the XOR
+results, and computes result = K x C_IN - 2 x popcount, registering the
+result on the rising clock edge with synchronous reset.
+Parameters: DATA_WIDTH=8, KERNEL_SIZE=3, C_IN=64, C_OUT=64.
 
 ---
 
-## Precision: 1-bit Weights + INT8 Activations
+## Interface Choice: SPI
 
-- Weights: 1-bit packed (+1/-1), total 1,560 bytes — fits on-chip SRAM
-- Activations: INT8 (8-bit signed)
-- Eliminates FP32 multiply — replaced by XOR + popcount
-- Enables HW target of 400 GFLOP/s (3.3x over SW baseline)
+The SPI interface was selected based on the M1 arithmetic intensity analysis
+which showed Conv2 at 187.5 FLOPs/byte — 5.6x above the ridge point of
+33.3 FLOPs/byte — placing the kernel firmly in the compute-bound regime.
+Since the design is compute-bound and not memory-bound, interface bandwidth
+is not the bottleneck. At 10 inferences per second, only 510 bytes per
+inference are transferred, requiring just 0.041 Mbit/s — a fraction of
+SPI's 50 Mbit/s rating at only 0.082% utilization. AXI would add unnecessary
+complexity with no performance benefit given this extremely low bandwidth
+requirement. SPI Mode 0 (CPOL=0, CPHA=0) slave interfaces directly with
+the host ARM Cortex-M MCU (STM32L4 or Nordic nRF52840).
+
+---
+
+## Precision Choice: 1-bit Weights + INT8 Activations
+
+Weights are 1-bit packed (+1/-1) with total memory of only 1,560 bytes
+fitting entirely on-chip SRAM. Activations are INT8 (8-bit signed integers).
+This eliminates all floating point multiplications replacing them with
+XOR + popcount which maps directly and efficiently to digital logic.
+This precision choice enables the HW target of 400 GFLOP/s which is
+3.3x over the SW baseline of 122.17 GFLOP/s on Apple M4.
 
 ---
 
@@ -126,27 +144,6 @@ Microphone → ADC + Framing (16kHz, 25ms windows)
 | Conv1 weights (1-bit packed) | 24 bytes |
 | Conv2 weights (1-bit packed) | 1,536 bytes |
 | Total on-chip | 1,560 bytes |
-
----
-
-## HDL Files (SystemVerilog)
-
-| File | Description |
-|------|-------------|
-| project/hdl/binary_conv.sv | XOR + popcount 1D convolution engine |
-| project/hdl/tb_binary_conv.py | cocotb testbench stub |
-| project/hdl/Makefile | Simulation build system |
-
----
-
-## Milestones
-
-| Milestone | Due | Status |
-|-----------|-----|--------|
-| M1 | Apr 12 | COMPLETE |
-| M2 | May 3 | IN PROGRESS |
-| M3 | May 24 | Not started |
-| M4 | Jun 7 | Not started |
 
 ---
 
