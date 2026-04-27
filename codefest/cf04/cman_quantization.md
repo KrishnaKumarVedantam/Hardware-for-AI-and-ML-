@@ -2,32 +2,46 @@ CMAN — Manual INT8 Symmetric Quantization
 ECE 410/510 — Codefest 4
 Author: Venkata Krishna Kumar Vedantam
 
+
 Weight Matrix W (FP32)
 W = [  0.85, -1.20,  0.34,  2.10 ]
     [ -0.07,  0.91, -1.88,  0.12 ]
     [  1.55,  0.03, -0.44, -2.31 ]
     [ -0.18,  1.03,  0.77,  0.55 ]
 
+
+
 Task 1: Scale Factor
+
 max|W| = 2.31  (element W[2][3] = -2.31)
+
 
 S = max(|W|) / 127 = 2.31 / 127 = 0.018189
 
+
 Task 2: Quantize — W_q = round(W / S), clamped to [-128, 127]
+
 W / S (before rounding):
+
 [  46.73,  -65.97,   18.69,  115.45 ]
 [  -3.85,   50.03, -103.36,    6.60 ]
 [  85.22,    1.65,  -24.19, -127.00 ]
 [  -9.90,   56.63,   42.33,   30.24 ]
+
 No clamping required — all values within [-128, 127].
+
 W_q (INT8):
+
 [  47,  -66,   19,  115 ]
 [  -4,   50, -103,    7 ]
 [  85,    2,  -24, -127 ]
 [ -10,   57,   42,   30 ]
 
+
 Task 3: Dequantize — W_deq = W_q x S
+
 W_deq:
+
 [  0.8549, -1.2005,  0.3456,  2.0917 ]
 [ -0.0728,  0.9094, -1.8735,  0.1273 ]
 [  1.5461,  0.0364, -0.4365, -2.3100 ]
