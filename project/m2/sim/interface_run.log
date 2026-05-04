@@ -1,0 +1,31 @@
+==============================================
+tb_interface -- KWS SPI Slave
+Venkata Krishna Kumar Vedantam | ECE 510 Spring 2026
+SPI Mode 0 (CPOL=0 CPHA=0) MSB first
+N_IN_BYTES=4 N_OUT_BYTES=2
+==============================================
+
+--- T1: Write transaction ---
+  rx[0]=de (exp DE)
+  rx[1]=ad (exp AD)
+  rx[2]=be (exp BE)
+  rx[3]=ef (exp EF)
+  T1-write: PASS
+
+--- T2: Read transaction (MISO = tx_data) ---
+  MISO byte0=000000a5 (exp A5)
+  MISO byte1=0000003c (exp 3C)
+  T2-read: PASS
+
+--- T3: rx_done pulse ---
+  T3-rx_done: PASS
+
+--- T4: Second write 0x12 0x34 0x56 0x78 ---
+  T4-second-write: PASS
+
+==============================================
+Tests passed : 4 / 4
+Total errors : 0
+RESULT: PASS
+==============================================
+tb/tb_interface.sv:165: $finish called at 45790000 (1ps)

@@ -1,0 +1,27 @@
+==============================================
+tb_compute_core -- KWS Binary Conv2
+Venkata Krishna Kumar Vedantam | ECE 510 Spring 2026
+Reference: golden_reference.py (independent)
+==============================================
+
+--- T1: all-agree ---
+  T1-all-agree: PASS
+
+--- T2: all-disagree ---
+  T2-all-disagree: PASS
+
+--- T3: alternating ---
+  T3-alternating: PASS
+
+--- T4: random (seed=42) ---
+  T4-random-seed42: PASS
+
+--- T5: all-zero ---
+  T5-all-zero: PASS
+
+==============================================
+Tests passed : 5 / 5
+Total errors : 0
+RESULT: PASS
+==============================================
+tb/tb_compute_core.sv:213: $finish called at 2605000 (1ps)
