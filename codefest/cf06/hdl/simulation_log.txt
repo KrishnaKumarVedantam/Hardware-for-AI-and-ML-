@@ -1,0 +1,94 @@
+=================================================
+ crossbar_mac — FINAL SIMULATION LOG
+ ECE 410/510 Codefest 6 — CLLM Task
+=================================================
+
+--- OFFICIAL TESTBENCH (prof-specified test + regression) ---
+=======================================================
+ crossbar_mac Testbench — ECE 410/510 Codefest 6
+=======================================================
+
+=== SECTION A: Prof Required Test ===
+  [PASS] T1 Prof[10,20,30,40] => [-40,0,-20,-20] out=[-40, 0, -20, -20]
+
+=== SECTION B: Baseline Sanity ===
+  [PASS] B1 zero input                       out=[0, 0, 0, 0]
+  [PASS] B2 all+1, in=1→4                  out=[4, 4, 4, 4]
+  [PASS] B3 all+1, in=10→40                out=[40, 40, 40, 40]
+  [PASS] B4 all-1, in=1→-4                 out=[-4, -4, -4, -4]
+
+=== SECTION C: Weight Column Verification (unit inputs) ===
+  [PASS] C1 in=[1,0,0,0] reads row0          out=[1, -1, 1, -1]
+  [PASS] C2 in=[0,1,0,0] reads row1          out=[1, 1, -1, -1]
+  [PASS] C3 in=[0,0,1,0] reads row2          out=[-1, 1, 1, -1]
+  [PASS] C4 in=[0,0,0,1] reads row3          out=[-1, -1, -1, 1]
+
+=== SECTION D: Weight Reload ===
+  [PASS] D1 all+1 loaded, in=10              out=[40, 40, 40, 40]
+  [PASS] D2 reloaded all-1, in=10            out=[-40, -40, -40, -40]
+  [PASS] D3 reloaded prof weights            out=[-40, 0, -20, -20]
+
+=== SECTION E: Signed / Negative Inputs ===
+  [PASS] E1 neg inputs all+1                 out=[-100, -100, -100, -100]
+  [PASS] E2 cancellation=0                   out=[0, 0, 0, 0]
+  [PASS] E3 mixed-sign sum                   out=[2, 2, 2, 2]
+  [PASS] E4 neg input, -1 weights            out=[100, 100, 100, 100]
+
+=== SECTION F: Overflow Corner Cases ===
+  [PASS] F1 max+ inputs → 508              out=[508, 508, 508, 508]
+  [PASS] F2 max- inputs →-508              out=[-508, -508, -508, -508]
+  [PASS] F3 in=-128,w=-1 → 512 (11-bit needed!) out=[512, 512, 512, 512]
+  [PASS] F4 in=127,w=+1 → 508              out=[508, 508, 508, 508]
+  [PASS] F5 in=-128,w=+1 →-512 (11-bit needed!) out=[-512, -512, -512, -512]
+
+=== SECTION G: Reset Behavior ===
+  [PASS] G1 rst_n=0 clears outputs           out=[0, 0, 0, 0]
+  [PASS] G2 resumes correctly after reset    out=[20, 20, 20, 20]
+
+=== SECTION H: Simultaneous Weight Load + Input ===
+  [PASS] H1 simultaneous load+input          out=[-40, 0, -20, -20]
+
+=== SECTION I: load_w Held Multiple Cycles ===
+  [PASS] I1 multi-cycle load_w               out=[28, 28, 28, 28]
+
+=== SECTION J: Back-to-Back Input Pipeline ===
+  [PASS] J1 pipeline: out from [1,2,3,4]     out=[10, 10, 10, 10]
+  [PASS] J2 pipeline: out from [5,5,5,5]     out=[20, 20, 20, 20]
+
+=== SECTION K: Asymmetric Weight Patterns ===
+  [PASS] K1 col0=+1 rest=-1                  out=[4, -4, -4, -4]
+  [PASS] K2 diagonal+1 off-diag-1            out=[-8, -6, -4, -2]
+
+=== SECTION L: Negated Prof Vector ===
+  [PASS] L1 negated prof inputs              out=[40, 0, 20, 20]
+  [PASS] L2 prof inputs halved               out=[-20, 0, -10, -10]
+
+=======================================================
+ FINAL: 31 PASSED, 0 FAILED
+ *** ALL TESTS PASSED — GOOD TO GO ***
+=======================================================
+crossbar_tb.sv:270: $finish called at 866000 (1ps)
+
+--- MEGA CRACK: 598 random+targeted cases ---
+=== MEGA CRACK RESULT: 598 passed, 0 failed out of 598 ===
+UNCRACKABLE
+crack_mega_tb.sv:2380: $finish called at 17496000 (1ps)
+
+--- TIMING ATTACK: 20 pipeline/hazard cases ---
+=== TIMING CRACK: 20 passed, 0 failed ===
+TIMING UNCRACKABLE
+crack_timing_tb.sv:152: $finish called at 396000 (1ps)
+
+--- WIRING ISOLATION: 16 per-cell cases ---
+=== WIRING: 16 passed, 0 failed ===
+WIRING UNCRACKABLE
+crack_wiring_tb.sv:108: $finish called at 516000 (1ps)
+
+--- SIGN ARITHMETIC: 24 boundary cases ---
+=== SIGN: 24 passed, 0 failed ===
+SIGN UNCRACKABLE
+crack_sign_tb.sv:123: $finish called at 756000 (1ps)
+
+MUTATION TESTING: 5 deliberate bugs injected — all caught
+
+GRAND TOTAL: 689 tests, 0 failures — GOOD TO GO
