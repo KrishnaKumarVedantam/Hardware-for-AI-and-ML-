@@ -1,0 +1,16 @@
+{
+    "DESIGN_NAME": "top",
+    "VERILOG_FILES": [
+        "/work/project/m3/rtl/top.sv",
+        "/work/project/m3/rtl/compute_core.sv",
+        "/work/project/m3/rtl/interface.sv"
+    ],
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 10.0,
+    "DIE_AREA": "0 0 5000 5000",
+    "FP_CORE_UTIL": 10,
+    "PL_TARGET_DENSITY_PCT": 15,
+    "SYNTH_STRATEGY": "AREA 0",
+    "PDK": "sky130A",
+    "STD_CELL_LIBRARY": "sky130_fd_sc_hd"
+}
