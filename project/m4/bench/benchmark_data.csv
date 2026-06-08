@@ -1,0 +1,16 @@
+metric,sw_baseline,hw_n8_measured,hw_n500_extrapolated,unit,source
+inference_time_ms,0.102,0.0336,1.0727,ms,sw=m1/sw_baseline.md hw=vcd+synth
+throughput_sps,9787,29762,932,samples/sec,1000/inference_time_ms
+clock_mhz,N/A,30.3,30.3,MHz,synth/timing_report.txt
+cycles,N/A,1018,32504,cycles,vcd=sim/cosim_waveform.vcd extrap=(500+3+32000+1)
+power_mw,15000,24.6,24.6,mW,sw=cpu_tdp hw=synth/power_report.txt
+energy_uj,1530,0.827,26.39,uJ,power_mw*inference_time_ms/1000
+speedup_vs_sw,1.0,3.04_UNFAIR,0.095,x,hw_n500/sw=honest_comparison
+energy_savings,1.0,1850,58,x,sw_energy/hw_energy
+wns_ns,N/A,0.00,0.00,ns,synth/timing_report.txt
+slack_ns,N/A,1.093,1.093,ns,synth/timing_report.txt
+area_stdcell_um2,N/A,508711,508711,um2,synth/area_report.txt
+area_total_um2,N/A,890127,890127,um2,stdcell+sram_lef
+cell_count,N/A,39187,39187,cells,synth/area_report.txt
+sw_throughput_sps,9787,N/A,N/A,samples/sec,m1/sw_baseline.md
+sw_gflops,122.17,N/A,N/A,GFLOP/s,m1/sw_baseline.md
