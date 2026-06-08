@@ -1,0 +1,29 @@
+VCD info: dumpfile sim/cosim_waveform.vcd opened for output.
+==============================================
+tb_top KWS Binary Conv2 End-to-End Co-Sim
+Venkata Krishna Kumar Vedantam ECE 510 S26
+Reference: golden.py independent seed=42
+C_IN=64 K=3 N_IN_BYTES=4000 matches M1
+==============================================
+
+--- Step 1: Loading weights (OC 0 and 1) ---
+
+--- Step 2: SPI write 4000 bytes ---
+SPI write done 4000 bytes
+
+--- Step 3: Waiting ~33500 cycles ---
+
+--- Step 4: SPI read 10 bytes ---
+
+--- Step 5: Verify against golden.py ---
+Expected byte[0]=0xf8 (OC=0 pos=0 result=-8)
+Expected byte[1]=0xe (OC=1 pos=0 result=14)
+Received byte[0]=0xf8 byte[1]=0xe
+PASS OC=0 pos=0 MISO=0xf8 = -8
+PASS OC=1 pos=0 MISO=0xe = 14
+
+==============================================
+Errors : 0
+RESULT: PASS
+==============================================
+tb/tb_top.sv:146: $finish called at 2901805000 (1ps)
