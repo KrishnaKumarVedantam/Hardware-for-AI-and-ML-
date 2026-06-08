@@ -157,6 +157,7 @@ This precision choice enables the HW target of 400 GFLOP/s which is
 ## M4 Final Submission
 
 **Student:** Venkata Krishna Kumar Vedantam
+
 **Project:** KWS Hardware Accelerator Chiplet — ECE 510 Spring 2026 — Portland State University
 
 M4 deliverables are in [project/m4/](project/m4/). 
