@@ -152,6 +152,7 @@ This precision choice enables the HW target of 400 GFLOP/s which is
 - Simulation: cocotb + Icarus Verilog
 - Synthesis: OpenLane 2 (RTL to GDSII)
 - Interface: SPI
+- Host: ARM Cortex-M
 
 ## M4 Final Submission
 
@@ -165,4 +166,4 @@ Full file catalog: [project/m4/README.md](project/m4/README.md).
 Design justification report: [project/m4/report/design_justification.pdf](project/m4/report/design_justification.pdf).
 
 ---
-- Host: ARM Cortex-M
+
