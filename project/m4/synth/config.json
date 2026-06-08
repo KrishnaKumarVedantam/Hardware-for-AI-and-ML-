@@ -1,0 +1,29 @@
+{
+  "DESIGN_NAME": "top",
+  "VERILOG_FILES": [
+    "dir::src/compute_core.sv",
+    "dir::src/top.sv",
+    "dir::src/interface.sv"
+  ],
+  "VERILOG_FILES_BLACKBOX": [
+    "/root/.volare/sky130A/libs.ref/sky130_sram_macros/verilog/sky130_sram_1kbyte_1rw1r_32x256_8.v"
+  ],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 33.0,
+  "PDK": "sky130A",
+  "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+  "EXTRA_LEFS": [
+    "/root/.volare/sky130A/libs.ref/sky130_sram_macros/lef/sky130_sram_1kbyte_1rw1r_32x256_8.lef"
+  ],
+  "EXTRA_GDS_FILES": [
+    "/root/.volare/sky130A/libs.ref/sky130_sram_macros/gds/sky130_sram_1kbyte_1rw1r_32x256_8.gds"
+  ],
+  "EXTRA_LIBS": [
+    "/root/.volare/sky130A/libs.ref/sky130_sram_macros/lib/sky130_sram_1kbyte_1rw1r_32x256_8_TT_1p8V_25C.lib"
+  ],
+  "PDN_MACRO_CONNECTIONS": [
+    "u_cc.u_sram_a vccd1 vssd1 vccd1 vssd1",
+    "u_cc.u_sram_b vccd1 vssd1 vccd1 vssd1"
+  ],
+  "FP_PDN_MULTILAYER": true
+}
